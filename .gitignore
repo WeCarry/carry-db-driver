@@ -1,0 +1,24 @@
+# Node.js dependencies
+/node_modules/
+
+# TypeScript build output
+/dist/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Editor settings
+/.vscode/
+
+# Package manager lock files
+yarn.lock
+package-lock.json
+
+# Jest coverage output
+/coverage/
+
+# Mac specific
+.DS_Store
