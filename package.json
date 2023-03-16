@@ -4,6 +4,10 @@
 	"description": "A brief description of your package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fayyozbobokulov/carry-db-driver"
+	},
 	"scripts": {
 		"clean": "rimraf dist",
 		"build": "npm run clean && tsc && npm run copy-package-json",
