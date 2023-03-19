@@ -4,17 +4,15 @@
 	"description": "A brief description of your package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"files": [
-		"dist/**/*.js",
-		"dist/**/*.d.ts"
-	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/WeCarry/carry-db-driver"
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build": "npm run clean && tsc",
+		"build": "npm run clean && tsc && npm run copy-package-json && npm run copy-readme",
+		"copy-package-json": "cp package.json dist/",
+		"copy-readme": "cp README.md dist/",
 		"deploy": "npm publish dist",
 		"test": "jest",
 		"test:watch": "jest --watch",

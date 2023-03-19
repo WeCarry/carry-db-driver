@@ -1,4 +1,10 @@
-/node_modules
-/src
-/scripts
-/tsconfig.json
+node_modules
+src
+*.ts
+*.tsx
+*.spec.*
+*.log
+*.lock
+*.json
+!package.json
+!tsconfig.json
