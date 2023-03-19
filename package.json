@@ -1,6 +1,6 @@
 {
 	"name": "carry-db-driver",
-	"version": "1.0.1",
+	"version": "1.0.4",
 	"description": "A brief description of your package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -10,8 +10,9 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build": "npm run clean && tsc && npm run copy-package-json",
+		"build": "npm run clean && tsc && npm run copy-package-json && npm run copy-readme",
 		"copy-package-json": "cp package.json dist/",
+		"copy-readme": "cp README.md dist/",
 		"deploy": "npm publish dist",
 		"test": "jest",
 		"test:watch": "jest --watch",
