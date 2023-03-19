@@ -13,7 +13,8 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build": "npm run clean && tsc",
+		"build": "node ./scripts/build.js && tsc",
+		"build:old": "npm run clean && tsc",
 		"copy-package-json": "cp package.json dist/",
 		"copy-readme": "cp README.md dist/",
 		"deploy": "npm publish dist",
