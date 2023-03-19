@@ -1,5 +1,5 @@
 import { Document, OptionalId } from "mongodb";
-import { MongoDBAdapter } from "../adapters/index";
+import { MongoDBAdapter } from "../adapters/mongodb.adapter";
 
 export interface IRepository<T extends Document> {
 	create(data: T | OptionalId<T>): Promise<T>;

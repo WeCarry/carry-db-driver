@@ -1,3 +1,1 @@
-import MongoDBAdapter from "./mongodb.adapter";
-
-export { MongoDBAdapter };
+export * from "./mongodb.adapter";

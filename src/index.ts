@@ -1,3 +1,3 @@
-export { default as Database } from "./database";
-export { default as MongoDBAdapter } from "./adapters/mongodb.adapter";
-export * from "./database"; // Export the DatabaseConfig interface
+export { Database, DatabaseConfig } from "./database";
+export { MongoDBAdapter } from "./adapters/mongodb.adapter";
+export { BaseRepository, IRepository } from "./repositories/base.repository";

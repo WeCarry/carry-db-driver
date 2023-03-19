@@ -1,31 +1,28 @@
 {
 	"name": "carry-db-driver",
-	"version": "1.0.1",
+	"version": "1.0.9",
 	"description": "A brief description of your package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"files": [
+		"dist/**/*.js",
+		"dist/**/*.d.ts"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/WeCarry/carry-db-driver"
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build": "npm run clean && tsc && npm run copy-package-json",
-		"copy-package-json": "cp package.json dist/",
+		"build": "npm run clean && tsc",
 		"deploy": "npm publish dist",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage"
 	},
-	"keywords": [
-		"mongodb",
-		"adapter",
-		"database"
-	],
 	"author": "b.fayyoz2000@gmail.com",
 	"license": "MIT",
 	"dependencies": {
-		"@types/mongodb": "^4.0.7",
 		"@types/node": "^18.15.3",
 		"mongodb": "^5.1.0",
 		"typescript": "^5.0.2"
@@ -35,8 +32,5 @@
 		"jest": "^29.5.0",
 		"rimraf": "^4.4.0",
 		"ts-jest": "^29.0.5"
-	},
-	"files": [
-		"dist"
-	]
+	}
 }

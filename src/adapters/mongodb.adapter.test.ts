@@ -1,4 +1,4 @@
-import MongoDBAdapter from "../adapters/mongodb.adapter";
+import { MongoDBAdapter } from "./mongodb.adapter";
 
 describe("MongoDBAdapter", () => {
 	test("should be defined", () => {
