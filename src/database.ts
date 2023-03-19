@@ -1,5 +1,5 @@
 import { MongoClient, MongoClientOptions } from "mongodb";
-import MongoDBAdapter from "./adapters/mongodb.adapter";
+import { MongoDBAdapter } from "./adapters/mongodb.adapter";
 
 export interface DatabaseConfig {
 	url: string;
@@ -7,7 +7,7 @@ export interface DatabaseConfig {
 	options?: MongoClientOptions;
 }
 
-class Database {
+export class Database {
 	private config: DatabaseConfig;
 	private client: MongoClient | null;
 	private adapter: MongoDBAdapter | null;
@@ -46,5 +46,3 @@ class Database {
 		return this.adapter;
 	}
 }
-
-export default Database;

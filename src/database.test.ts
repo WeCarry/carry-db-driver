@@ -1,4 +1,4 @@
-import Database from "./database";
+import { Database } from "./database";
 
 describe("Database", () => {
 	test("should be defined", () => {
