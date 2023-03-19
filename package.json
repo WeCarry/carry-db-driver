@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build:old": "npm run clean && tsc",
+		"build": "npm run clean && tsc",
 		"deploy": "npm publish dist",
 		"test": "jest",
 		"test:watch": "jest --watch",
