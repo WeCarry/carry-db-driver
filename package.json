@@ -1,11 +1,12 @@
 {
 	"name": "carry-db-driver",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"description": "A brief description of your package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"files": [
-		"dist"
+		"dist/**/*.js",
+		"dist/**/*.d.ts"
 	],
 	"repository": {
 		"type": "git",
@@ -13,10 +14,7 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist",
-		"build": "node ./scripts/build.js && tsc",
 		"build:old": "npm run clean && tsc",
-		"copy-package-json": "cp package.json dist/",
-		"copy-readme": "cp README.md dist/",
 		"deploy": "npm publish dist",
 		"test": "jest",
 		"test:watch": "jest --watch",
@@ -25,7 +23,6 @@
 	"author": "b.fayyoz2000@gmail.com",
 	"license": "MIT",
 	"dependencies": {
-		"@types/mongodb": "^4.0.7",
 		"@types/node": "^18.15.3",
 		"mongodb": "^5.1.0",
 		"typescript": "^5.0.2"
