@@ -1,70 +1,143 @@
+# My Database Package
 
-# MongoDB Repository
+This package provides an easy-to-use interface for working with MongoDB. It includes a database connection manager, an adapter for MongoDB operations, a base repository for schema validation, and custom repositories for your data models.
 
-This package provides a simple repository pattern implementation for MongoDB using the native MongoDB library for Node.js.
+## Table of Contents
+
+- Installation
+- Usage
+  - Database Configuration and Connection
+  - Creating a Repository
+  - Performing CRUD Operations
+  - Using Schema Validation
+- API Reference
+  - Database
+  - MongoDBAdapter
+  - BaseRepository
 
 ## Installation
 
-To install this package, run the following command:
+To install this package, use the following command:
 
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>bash</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">npm install carry-db-driver
-</code></div></div></pre>
+`npm install carry-db-driver`
 
 ## Usage
 
-First, create a `Database` instance and connect to your MongoDB database:
+### Database Configuration and Connection
 
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>typescript</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-typescript">import { Database, DatabaseConfig } from "mongodb-repository";
+First, import the `Database` class from the package and create a new instance with your MongoDB connection settings:
 
-const config: DatabaseConfig = {
+```
+import { Database } from "carry-db-driver";
+
+const database = new Database({
   url: "mongodb://localhost:27017",
-  dbName: "mydb",
-};
+  dbName: "myDatabase",
+});
 
-const db = new Database(config);
-await db.connect();
-</code></div></div></pre>
+await database.connect();
 
-Next, create a repository for a specific collection by extending the `BaseRepository` class:
+```
 
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>typescript</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-typescript">import { BaseRepository } from "mongodb-repository";
-import { DriverDocument } from "../models/Driver";
-import { MongoDBAdapter } from "../adapters/mongodb.adapter";
+Don't forget to call `disconnect()` when you're done using the database:
 
-class DriverRepository extends BaseRepository<DriverDocument> {
+### Creating a Repository
+
+To create a custom repository, extend the `BaseRepository` class and provide the necessary settings, including the `adapter`, `collection`, and optional `schema`. Here's an example of a `UserRepository`:
+
+```
+import { BaseRepository } from "carry-db-driver";
+
+class UserRepository extends BaseRepository<User> {
   constructor(adapter: MongoDBAdapter) {
-    super(adapter, "drivers");
+    super({ adapter, collection: "users", schema: userSchema });
   }
 }
 
-const driverRepository = new DriverRepository(db.getAdapter());
-</code></div></div></pre>
+```
 
-You can then use the repository's methods to interact with the collection. For example, to create a new `Driver` document, you can use the `create()` method:
+### Performing CRUD Operations
 
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>typescript</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-typescript">const newDriver: DriverDocument = {
-  firstName: "John",
-  lastName: "Doe",
-  email: "johndoe@example.com",
-  password: "password",
-  phoneNumber: "555-1234",
-  driverLicenseNumber: "12345",
-  carMake: "Toyota",
-  carModel: "Corolla",
-  carColor: "Red",
-  carPlateNumber: "ABC-123",
+You can use the methods provided by the custom repository to perform CRUD operations on the database. For example:
+
+```
+const userRepository = new UserRepository(database.getAdapter());
+
+const user: User = {
+  name: "John Doe",
+  email: "john.doe@example.com",
+  age: 30,
 };
 
-const createdDriver = await driverRepository.create(newDriver);
-</code></div></div></pre>
+const createdUser = await userRepository.create(user);
 
-Similarly, you can use the `read()`, `update()`, and `delete()` methods to retrieve, update, and delete documents in the collection.
+```
 
-Finally, remember to disconnect from the database when you're done:
+### Using Schema Validation
 
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>typescript</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-typescript">await db.disconnect();
-</code></div></div></pre>
+To validate your data against a JSON schema, provide the schema when creating your custom repository. Here's an example schema for the `User` model:
 
-## License
+```
+const userSchema = {
+  type: "object",
+  properties: {
+    _id: { type: "string", format: "objectId" },
+    name: { type: "string", minLength: 1, maxLength: 50 },
+    email: { type: "string", format: "email" },
+    age: { type: "integer", minimum: 1, maximum: 120 },
+  },
+  required: ["name", "email"],
+  additionalProperties: false,
+};
 
-This package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+```
+
+When you perform CRUD operations with your repository, the data will be validated against the schema before being sent to the database.
+
+## API Reference
+
+### Database
+
+The `Database` class is responsible for managing the connection to MongoDB.
+
+#### Methods
+
+- `connect(): Promise<void>`: Connects to the MongoDB server.
+- `disconnect(): Promise<void>`: Disconnects from the MongoDB server.
+- `getAdapter(): MongoDBAdapter`: Returns the MongoDB adapter instance.
+
+### MongoDBAdapter
+
+The `MongoDBAdapter` class provides methods for performing MongoDB operations.
+
+#### Methods
+
+- `create<T extends Document>(collectionName: string, data: OptionalId<T>): Promise<WithId<T>>`: Inserts a new document into the specified collection.
+- ` find<T extends Document>````(collectionName: string, query: Filter<T>``, options?: FindOptions<T>``): Promise<WithId<T>``[]> `: Finds documents in the specified collection that match the query.
+- `update<T extends Document>(collectionName: string, query: Filter<T>, data: UpdateOptions | Partial<T>): Promise<any>`: Updates a document in the specified collection that matches the query.
+- `delete<T>(collectionName: string, query: Filter<T>): Promise<DeleteResult>`: Deletes a document in the specified collection that matches the query.
+- `deleteMany<T>(collectionName: string, query: Filter<T>): Promise<DeleteResult>`: Deletes multiple documents in the specified collection that match the query.
+- `aggregate<T extends Document>(collection: string, pipeline: object[]): Promise<T[]>`: Performs an aggregation pipeline on the specified collection.
+- `countDocuments<T extends Document>(collection: string, query: Filter<T>): Promise<number>`: Counts the number of documents in the specified collection that match the query.
+- `findOne<T extends Document>(collection: string, query: Filter<T>): Promise<WithId<T> | null>`: Finds one document in the specified collection that matches the query.
+- `findOneAndUpdate<T extends Document>(collection: string, query: Filter<T>, update: UpdateOptions | Partial<T>, options?: FindOneAndUpdateOptions): Promise<WithId<T> | null>`: Finds a document in the specified collection that matches the query and updates it.
+- `findOneAndDelete<T extends Document>(collection: string, query: Filter<T>, options?: FindOneAndDeleteOptions): Promise<WithId<T> | null>`: Finds a document in the specified collection that matches the query and deletes it.
+- `findOneAndReplace<T extends Document>(collection: string, query: Filter<T>, replacement: WithoutId<T>, options?: FindOneAndReplaceOptions): Promise<WithId<T> | null>`: Finds a document in the specified collection that matches the query and replaces it.
+- `bulkWrite(collection: string, operations: AnyBulkWriteOperation[]): Promise<BulkWriteResult>`: Performs multiple write operations in the specified collection.
+
+### BaseRepository
+
+The `BaseRepository` class is a generic repository that provides basic CRUD operations and schema validation.
+
+#### Methods
+
+- `create(data: OptionalId<T>): Promise<WithId<T>>`: Inserts a new document into the specified collection.
+- `find(query: Filter<T>, options?: FindOptions<T>): Promise<WithId<T>[]>`: Finds documents in the specified collection that match the query.
+- `update(query: any, data: Partial<T>): Promise<any>`: Updates a document in the specified collection that matches the query.
+- `delete(query: any): Promise<DeleteResult>`: Deletes a document in the specified collection that matches the query.
+- `deleteMany(query: Filter<T>): Promise<DeleteResult>`: Deletes multiple documents in the specified collection that match the query.
+- `aggregate(pipeline: object[]): Promise<any[]>`: Performs an aggregation pipeline on the specified collection.
+- `countDocuments(query: Filter<Document>): Promise<number>`: Counts the number of documents in the specified collection that match the query.
+- `findOne(query: Filter<T>): Promise<WithId<T> | null>`: Finds one document in the specified collection that matches the query.
+- `findOneAndUpdate(query: Filter<T>, update: UpdateOptions | Partial<T>, options?: FindOneAndUpdateOptions): Promise<WithId<T> | null>`: Finds a document in the specified collection that matches the query and updates it.
+- `findOneAndDelete(query: Filter<T>, options?: FindOneAndDeleteOptions): Promise<WithId<T> | null>`: Finds a document in the specified collection that matches the query and deletes it.
